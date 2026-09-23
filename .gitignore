@@ -1,0 +1,54 @@
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+
+# Node
+node_modules/
+.next/
+dist/
+*.tsbuildinfo
+
+# Environment and secrets
+.env
+.env.*
+!.env.example
+.envrc
+.hitrendy-dev-ports.json
+secrets/
+*.key
+*.pem
+*.p12
+
+# Generated assets
+uploads/
+storage/
+graphify-out/
+coverage/
+test-results/
+playwright-report/
+*.db
+.ruff_cache/
+test_*.db
+test_*.db
+
+# Impeccable local runtime state
+.impeccable/config.local.json
+.impeccable/hook.cache.json
+.impeccable/hook.pending.json
+.impeccable/*.png
+.impeccable/live/server.json
+.impeccable/live/sessions/
+.impeccable/live/previews/
+.impeccable/live/annotations/
+.impeccable/live/cache/
+.impeccable/live/*.png
+
+# OS/editor
+.DS_Store
+.vscode/
+.idea/
+firebase-debug.log
+firebase-debug.*.log
+hi-trend/

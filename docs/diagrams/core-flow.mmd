@@ -1,0 +1,11 @@
+flowchart LR
+  U[User] --> UI[HiTrendy Web]
+  UI --> API[FastAPI]
+  API --> PROFILE[Business context]
+  API --> ORCH[Generation service]
+  ORCH --> PROVIDER[AI provider interface]
+  PROVIDER --> MODEL[Pretrained LLM]
+  MODEL --> VALIDATE[Schema validation]
+  VALIDATE --> EVAL[Quality rules]
+  EVAL --> STORE[(Artifact versions)]
+  STORE --> UI

@@ -1,0 +1,189 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  backend-fast:
+    name: Backend rápido
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: starter/backend
+
+    steps:
+      - name: Descargar repositorio
+        uses: actions/checkout@v4
+
+      - name: Configurar Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: starter/backend/requirements-dev.txt
+
+      - name: Instalar dependencias backend
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements-dev.txt
+
+      - name: Ejecutar Ruff
+        run: python -m ruff check .
+
+      - name: Ejecutar suite rápida
+        run: PYTHONPATH=. python -m pytest -m "not e2e and not real_ai and not real_trends and not real_images and not real_social and not real_video" -q
+
+  backend-postgres-e2e:
+    name: PostgreSQL, migraciones y E2E
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:17-alpine
+        env:
+          POSTGRES_DB: hitrendy_test
+          POSTGRES_USER: hitrendy
+          POSTGRES_PASSWORD: hitrendy
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U hitrendy -d hitrendy_test"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 20
+
+    defaults:
+      run:
+        working-directory: starter/backend
+
+    env:
+      TEST_DATABASE_URL: postgresql+psycopg://hitrendy:hitrendy@localhost:5432/hitrendy_test
+
+    steps:
+      - name: Descargar repositorio
+        uses: actions/checkout@v4
+
+      - name: Configurar Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: starter/backend/requirements-dev.txt
+
+      - name: Instalar dependencias backend
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements-dev.txt
+
+      - name: Esperar PostgreSQL
+        run: |
+          python - <<'PY'
+          import os
+          import time
+
+          import psycopg
+
+          sqlalchemy_url = os.environ["TEST_DATABASE_URL"]
+          psycopg_url = sqlalchemy_url.replace(
+              "postgresql+psycopg://",
+              "postgresql://",
+              1,
+          )
+
+          for attempt in range(30):
+              try:
+                  with psycopg.connect(psycopg_url, connect_timeout=3):
+                      print("PostgreSQL disponible")
+                      break
+              except psycopg.OperationalError:
+                  if attempt == 29:
+                      raise
+
+                  print(f"Esperando PostgreSQL ({attempt + 1}/30)...")
+                  time.sleep(1)
+          PY
+
+      - name: Migrar base vacía hasta head
+        run: |
+          PYTHONPATH=. python -m alembic upgrade head
+          PYTHONPATH=. python -m alembic upgrade head
+          PYTHONPATH=. python -m alembic current
+
+      - name: Confirmar revisión 025
+        run: |
+          python - <<'PY'
+          import os
+
+          from sqlalchemy import create_engine, text
+
+          engine = create_engine(os.environ["TEST_DATABASE_URL"])
+
+          with engine.connect() as connection:
+              revision = connection.scalar(
+                  text("SELECT version_num FROM alembic_version")
+              )
+
+          assert revision == "025", (
+              f"Revisión inesperada: {revision!r}. Se esperaba '025'."
+          )
+
+          print(f"Alembic revision: {revision}")
+          engine.dispose()
+          PY
+
+      - name: Ejecutar pruebas PostgreSQL de migraciones
+        env:
+          POSTGRES_MIGRATION_DATABASE_URL: postgresql+psycopg://hitrendy:hitrendy@localhost:5432/hitrendy_test
+          RUN_POSTGRES_MIGRATION_TESTS: "1"
+        run: PYTHONPATH=. python -m pytest tests/test_migrations_postgres.py -v
+
+      - name: Restaurar head después de las pruebas de migración
+        run: PYTHONPATH=. python -m alembic upgrade head
+
+      - name: Ejecutar E2E contra PostgreSQL
+        run: PYTHONPATH=. python -m pytest -m e2e -v
+
+  frontend:
+    name: Frontend
+    runs-on: ubuntu-latest
+
+    env:
+      NEXT_PUBLIC_API_URL: http://localhost:8000/api/v1
+
+    steps:
+      - name: Descargar repositorio
+        uses: actions/checkout@v4
+
+      - name: Configurar Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+          cache-dependency-path: package-lock.json
+
+      - name: Instalar dependencias reproducibles
+        run: npm ci
+
+      - name: Ejecutar tests frontend
+        run: npm run web:test
+
+      - name: Ejecutar typecheck
+        run: npm run web:typecheck
+
+      - name: Ejecutar lint
+        run: npm run web:lint
+
+      - name: Ejecutar build
+        run: npm run web:build
+
+      - name: Instalar Chromium para aceptación desktop y móvil
+        run: npx playwright install --with-deps chromium
+
+      - name: Ejecutar smoke browser de beta desktop y móvil
+        run: npm run web:test:e2e:beta

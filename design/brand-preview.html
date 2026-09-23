@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>HiTrendy Brand Preview</title>
+  <link rel="stylesheet" href="tokens.css" />
+  <style>
+    body { margin:0; padding:40px; background:var(--background); color:var(--foreground); font-family:var(--font-body); }
+    main { max-width:1100px; margin:auto; }
+    h1,h2,h3 { font-family:var(--font-heading); }
+    .hero { padding:42px; border-radius:24px; color:white; background:var(--gradient-hero); box-shadow:var(--shadow-soft); }
+    .logo { display:flex; align-items:center; gap:14px; font-size:30px; font-weight:800; }
+    .hand { width:54px; height:54px; display:grid; place-items:center; border-radius:18px; background:var(--ht-lavender-400); color:var(--ht-ink-950); transform:rotate(-6deg); }
+    .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:16px; margin:24px 0 40px; }
+    .swatch { border-radius:16px; overflow:hidden; border:1px solid var(--border); background:white; }
+    .color { height:100px; }
+    .meta { padding:12px; }
+    .component-row { display:flex; flex-wrap:wrap; gap:12px; align-items:center; padding:24px; background:white; border:1px solid var(--border); border-radius:16px; }
+    button { border:0; border-radius:12px; padding:12px 18px; font-weight:750; }
+    .primary { background:var(--gradient-primary); color:white; }
+    .secondary { background:var(--secondary); color:var(--secondary-foreground); }
+    input { padding:12px; border-radius:12px; border:1px solid var(--border); }
+    .card { margin-top:20px; padding:20px; background:white; border:1px solid var(--border); border-radius:16px; box-shadow:var(--shadow-soft); }
+  </style>
+</head>
+<body>
+<main>
+  <section class="hero">
+    <div class="logo"><span class="hand">Hi</span><span>HiTrendy</span></div>
+    <h1>Creatividad guiada para negocios reales.</h1>
+    <p>Vista de referencia para mantener coherencia entre Figma, frontend y contenido generado.</p>
+  </section>
+
+  <h2>Paleta principal</h2>
+  <div class="grid">
+    <div class="swatch"><div class="color" style="background:#180F4B"></div><div class="meta"><strong>Ink 950</strong><br>#180F4B</div></div>
+    <div class="swatch"><div class="color" style="background:#541787"></div><div class="meta"><strong>Violet 700</strong><br>#541787</div></div>
+    <div class="swatch"><div class="color" style="background:#8B3FEF"></div><div class="meta"><strong>Violet 500</strong><br>#8B3FEF</div></div>
+    <div class="swatch"><div class="color" style="background:#B79CFA"></div><div class="meta"><strong>Lavender 400</strong><br>#B79CFA</div></div>
+    <div class="swatch"><div class="color" style="background:#2D4BB6"></div><div class="meta"><strong>Blue 600</strong><br>#2D4BB6</div></div>
+    <div class="swatch"><div class="color" style="background:#F8F6FC"></div><div class="meta"><strong>Surface 50</strong><br>#F8F6FC</div></div>
+  </div>
+
+  <h2>Controles</h2>
+  <div class="component-row">
+    <button class="primary">Crear contenido</button>
+    <button class="secondary">Guardar proyecto</button>
+    <input aria-label="Ejemplo de entrada" placeholder="Describe tu idea" />
+  </div>
+
+  <article class="card">
+    <p style="font-size:12px;font-weight:800;letter-spacing:.08em;color:var(--muted-foreground)">PROPUESTA GENERADA</p>
+    <h2>Tu próximo antojo ya tiene nombre ✨</h2>
+    <p>Ejemplo de tarjeta para mostrar contenido editable con buena jerarquía y una sola acción principal.</p>
+  </article>
+</main>
+</body>
+</html>

@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://hitrendy.local/schemas/brand-profile.schema.json",
+  "title": "BrandProfile",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["voice_tones", "value_proposition", "preferred_words", "forbidden_words", "version"],
+  "properties": {
+    "voice_tones": {"type": "array", "minItems": 1, "maxItems": 3, "items": {"type": "string", "enum": ["friendly", "professional", "youthful", "elegant", "fun", "direct", "inspiring"]}},
+    "value_proposition": {"type": "string", "minLength": 1, "maxLength": 500},
+    "preferred_words": {"type": "array", "maxItems": 30, "items": {"type": "string", "maxLength": 80}},
+    "forbidden_words": {"type": "array", "maxItems": 30, "items": {"type": "string", "maxLength": 80}},
+    "primary_color": {"type": ["string", "null"], "pattern": "^#[0-9A-Fa-f]{6}$"},
+    "secondary_color": {"type": ["string", "null"], "pattern": "^#[0-9A-Fa-f]{6}$"},
+    "version": {"type": "integer", "minimum": 1}
+  }
+}

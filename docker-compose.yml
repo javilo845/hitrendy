@@ -1,0 +1,157 @@
+x-backend-environment: &backend-environment
+  APP_ENV: ${APP_ENV:-development}
+  APP_NAME: ${APP_NAME:-HiTrendy}
+  API_PREFIX: ${API_PREFIX:-/api/v1}
+  DATABASE_URL: postgresql+psycopg://hitrendy:hitrendy@postgres:5432/hitrendy
+  DATABASE_SSL_MODE: disable
+  REDIS_PROVIDER: redis
+  REDIS_REQUIRED: 0
+  REDIS_URL: redis://redis:6379/0
+  REDIS_PREFIX: hitrendy:development
+  STORAGE_PROVIDER: local
+  OBJECT_STORAGE_LOCAL_DIR: ./storage
+  OBJECT_STORAGE_ENDPOINT: http://minio:9000
+  OBJECT_STORAGE_ACCESS_KEY: minio
+  OBJECT_STORAGE_SECRET_KEY: minio123
+  OBJECT_STORAGE_BUCKET: hitrendy
+  SUPABASE_URL: ${SUPABASE_URL:-}
+  SUPABASE_SERVICE_ROLE_KEY: ${SUPABASE_SERVICE_ROLE_KEY:-}
+  SUPABASE_STORAGE_BUCKET: ${SUPABASE_STORAGE_BUCKET:-hitrendy-private}
+  AI_PROVIDER: ${AI_PROVIDER:-demo}
+  AI_MODEL: ${AI_MODEL:-demo-v1}
+  AI_BASE_URL: ${AI_BASE_URL:-}
+  AI_API_KEY: ${AI_API_KEY:-}
+  OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+  OPENAI_BASE_URL: ${OPENAI_BASE_URL:-https://api.openai.com/v1}
+  VISION_PROVIDER: ${VISION_PROVIDER:-demo}
+  VISION_MODEL: ${VISION_MODEL:-demo-vision-v1}
+  VISION_BASE_URL: ${VISION_BASE_URL:-}
+  VISION_API_KEY: ${VISION_API_KEY:-}
+  OPENROUTER_API_KEY: ${OPENROUTER_API_KEY:-}
+  OPENROUTER_BASE_URL: ${OPENROUTER_BASE_URL:-https://openrouter.ai/api/v1}
+  OPENROUTER_FAST_MODEL: ${OPENROUTER_FAST_MODEL:-openrouter/free}
+  OPENROUTER_BALANCED_MODEL: ${OPENROUTER_BALANCED_MODEL:-}
+  OPENROUTER_QUALITY_MODEL: ${OPENROUTER_QUALITY_MODEL:-}
+  IMAGE_GENERATION_ENABLED: ${IMAGE_GENERATION_ENABLED:-0}
+  IMAGE_PROVIDER: ${IMAGE_PROVIDER:-demo}
+  IMAGE_GENERATION_MODEL: ${IMAGE_GENERATION_MODEL:-}
+  IMAGE_GENERATION_ALLOWED_MODELS: ${IMAGE_GENERATION_ALLOWED_MODELS:-}
+  VIDEO_GENERATION_ENABLED: ${VIDEO_GENERATION_ENABLED:-0}
+  VIDEO_PROVIDER: ${VIDEO_PROVIDER:-demo}
+  VIDEO_GENERATION_MODEL: ${VIDEO_GENERATION_MODEL:-}
+  VIDEO_GENERATION_ALLOWED_MODELS: ${VIDEO_GENERATION_ALLOWED_MODELS:-}
+  VIDEO_GENERATION_ALLOWED_DURATIONS: ${VIDEO_GENERATION_ALLOWED_DURATIONS:-5,10}
+  TREND_ANALYSIS_ENABLED: ${TREND_ANALYSIS_ENABLED:-0}
+  YOUTUBE_TRENDS_ENABLED: ${YOUTUBE_TRENDS_ENABLED:-0}
+  YOUTUBE_API_KEY: ${YOUTUBE_API_KEY:-}
+  SERPAPI_TRENDS_ENABLED: ${SERPAPI_TRENDS_ENABLED:-0}
+  SERPAPI_API_KEY: ${SERPAPI_API_KEY:-}
+  RSS_TRENDS_ENABLED: ${RSS_TRENDS_ENABLED:-0}
+  RSS_TRENDS_ALLOWLIST: ${RSS_TRENDS_ALLOWLIST:-[{"identifier":"bbc-news","public_name":"BBC News RSS","feed_url":"https://feeds.bbci.co.uk/news/rss.xml","regions":["GLOBAL"],"categories":[],"enabled":true}]}
+  EMAIL_PROVIDER: ${EMAIL_PROVIDER:-demo}
+  EMAIL_FROM: ${EMAIL_FROM:-HiTrendy <no-reply@hitrendy.local>}
+  RESEND_API_KEY: ${RESEND_API_KEY:-}
+  JWT_SECRET: ${JWT_SECRET:-replace-in-local-env}
+  ALLOWED_ORIGINS: ${ALLOWED_ORIGINS:-http://localhost:3000}
+  ALLOWED_HOSTS: ${ALLOWED_HOSTS:-}
+  FRONTEND_URL: ${FRONTEND_URL:-http://localhost:3000}
+  CSRF_ENABLED: ${CSRF_ENABLED:-1}
+  SOCIAL_CONNECTIONS_ENABLED: ${SOCIAL_CONNECTIONS_ENABLED:-0}
+  SOCIAL_DEMO_PROVIDER_ENABLED: ${SOCIAL_DEMO_PROVIDER_ENABLED:-0}
+  SOCIAL_TOKEN_ENCRYPTION_KEY: ${SOCIAL_TOKEN_ENCRYPTION_KEY:-}
+  SOCIAL_PUBLIC_BACKEND_URL: ${SOCIAL_PUBLIC_BACKEND_URL:-http://localhost:8000}
+  INSTAGRAM_CONNECTIONS_ENABLED: ${INSTAGRAM_CONNECTIONS_ENABLED:-0}
+  INSTAGRAM_CLIENT_ID: ${INSTAGRAM_CLIENT_ID:-}
+  INSTAGRAM_CLIENT_SECRET: ${INSTAGRAM_CLIENT_SECRET:-}
+  INSTAGRAM_REDIRECT_URI: ${INSTAGRAM_REDIRECT_URI:-}
+
+services:
+  postgres:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_DB: hitrendy
+      POSTGRES_USER: hitrendy
+      POSTGRES_PASSWORD: hitrendy
+    ports: ["5432:5432"]
+    volumes: ["postgres_data:/var/lib/postgresql/data"]
+
+  postgres-test:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_DB: hitrendy_test
+      POSTGRES_USER: hitrendy
+      POSTGRES_PASSWORD: hitrendy
+    ports: ["5433:5432"]
+    volumes: ["postgres_test_data:/var/lib/postgresql/data"]
+
+  redis:
+    image: redis:8-alpine
+    ports: ["6379:6379"]
+
+  minio:
+    image: minio/minio:latest
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: minio
+      MINIO_ROOT_PASSWORD: minio123
+    ports: ["9000:9000", "9001:9001"]
+    volumes: ["minio_data:/data"]
+
+  api:
+    build:
+      context: .
+      dockerfile: starter/backend/Dockerfile
+    ports:
+      - "8000:8000"
+    environment: *backend-environment
+    volumes:
+      - ./starter/backend:/app
+    depends_on:
+      - postgres
+      - redis
+      - minio
+
+  image-worker:
+    build:
+      context: .
+      dockerfile: starter/backend/Dockerfile
+    command: ["python", "-m", "app.images.worker", "--interval", "5", "--batch", "5"]
+    environment: *backend-environment
+    volumes:
+      - ./starter/backend:/app
+    depends_on:
+      - postgres
+      - redis
+      - minio
+
+  video-worker:
+    build:
+      context: .
+      dockerfile: starter/backend/Dockerfile
+    command: ["python", "-m", "app.videos.worker", "--interval", "5", "--batch", "5"]
+    environment: *backend-environment
+    volumes:
+      - ./starter/backend:/app
+    depends_on:
+      - postgres
+      - redis
+      - minio
+
+  web:
+    build:
+      context: .
+      dockerfile: starter/web/Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - NEXT_PUBLIC_API_URL=http://api:8000/api/v1
+    volumes:
+      - ./starter/web:/app
+      - /app/node_modules
+    depends_on:
+      - api
+
+volumes:
+  postgres_data:
+  postgres_test_data:
+  minio_data:

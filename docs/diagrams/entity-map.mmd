@@ -1,0 +1,11 @@
+graph TD
+  Workspace --> Business
+  Business --> BrandProfile
+  Business --> Conversation
+  Conversation --> Message
+  Conversation --> GeneratedArtifact
+  GeneratedArtifact --> ArtifactVersion
+  Project --> GeneratedArtifact
+  Workspace --> Project
+  Workspace --> Asset
+  Template --> Project

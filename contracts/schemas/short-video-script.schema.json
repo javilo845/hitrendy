@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://hitrendy.local/schemas/short-video-script.schema.json",
+  "title": "GeneratedShortVideoScript",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["artifact_type", "platform", "hook", "duration_seconds", "scenes", "call_to_action", "caption", "assumptions"],
+  "properties": {
+    "artifact_type": {"const": "short_video_script"},
+    "platform": {"enum": ["instagram", "facebook", "tiktok", "whatsapp", "youtube", "x", "linkedin"]},
+    "hook": {"type": "string", "minLength": 1, "maxLength": 180},
+    "duration_seconds": {"type": "integer", "minimum": 5, "maximum": 90},
+    "scenes": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 8,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["order", "duration_seconds", "visual", "on_screen_text", "voiceover"],
+        "properties": {
+          "order": {"type": "integer", "minimum": 1, "maximum": 8},
+          "duration_seconds": {"type": "integer", "minimum": 1, "maximum": 30},
+          "visual": {"type": "string", "minLength": 1, "maxLength": 500},
+          "on_screen_text": {"type": "string", "minLength": 1, "maxLength": 240},
+          "voiceover": {"type": "string", "minLength": 1, "maxLength": 500}
+        }
+      }
+    },
+    "call_to_action": {"type": "string", "minLength": 1, "maxLength": 240},
+    "caption": {"type": "string", "minLength": 1, "maxLength": 2200},
+    "assumptions": {"type": "array", "maxItems": 10, "items": {"type": "string"}}
+  }
+}

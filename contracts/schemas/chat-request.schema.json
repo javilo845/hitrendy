@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://hitrendy.local/schemas/chat-request.schema.json",
+  "title": "ChatRequest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["text"],
+  "properties": {
+    "text": {"type": "string", "minLength": 1, "maxLength": 4000},
+    "ui_intent": {"type": ["string", "null"], "enum": [null, "create_social_post", "create_short_video_script", "analyze_visual"]},
+    "platform": {"type": ["string", "null"], "enum": [null, "instagram", "facebook", "tiktok", "whatsapp", "youtube", "x", "linkedin"]},
+    "tone": {"type": ["string", "null"], "enum": [null, "friendly", "professional", "youthful", "elegant", "fun", "direct", "inspiring"]},
+    "objective": {"type": ["string", "null"], "enum": [null, "reach", "engagement", "sales", "store_visits", "launch", "brand_awareness", "community"]},
+    "attachment_ids": {"type": "array", "maxItems": 5, "items": {"type": "string"}}
+  }
+}

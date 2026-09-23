@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://hitrendy.local/schemas/template.schema.json",
+  "title": "Template",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "title", "platforms", "formats", "category", "thumbnail_url", "editable_slots", "source"],
+  "properties": {
+    "id": {"type": "string"},
+    "title": {"type": "string", "minLength": 1, "maxLength": 120},
+    "platforms": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+    "formats": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+    "category": {"type": "string"},
+    "objective": {"type": "string"},
+    "thumbnail_url": {"type": ["string", "null"]},
+    "canva_url": {"type": ["string", "null"]},
+    "aspect_ratio": {"type": "string"},
+    "editable_slots": {"type": "array", "items": {"type": "string"}},
+    "description": {"type": ["string", "null"]},
+    "source": {"enum": ["custom", "canva"]},
+    "cover": {
+      "type": ["string", "null"],
+      "enum": [
+        "technology",
+        "gastronomy",
+        "fashion",
+        "beauty",
+        "fitness",
+        "health",
+        "education",
+        "real_estate",
+        "automotive",
+        "travel",
+        "events",
+        "pets",
+        null
+      ]
+    }
+  }
+}

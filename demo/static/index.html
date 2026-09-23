@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>HiTrendy — Demo</title>
+  <link rel="stylesheet" href="/static/styles.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" aria-label="Navegación principal">
+      <button class="brand-mark" aria-label="HiTrendy inicio">Hi</button>
+      <nav>
+        <button class="nav-button active" aria-label="Asistente" title="Asistente">✦</button>
+        <button class="nav-button" aria-label="Conversaciones" title="Conversaciones">◫</button>
+        <button class="nav-button" aria-label="Plantillas" title="Plantillas">▧</button>
+        <button class="nav-button" aria-label="Proyectos" title="Proyectos">▰</button>
+        <button class="nav-button" aria-label="Biblioteca" title="Biblioteca">▣</button>
+      </nav>
+      <button class="nav-button settings" aria-label="Configuración" title="Configuración">⚙</button>
+    </aside>
+
+    <main class="workspace">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">ASISTENTE PUBLICITARIO</p>
+          <h1>HiTrendy</h1>
+        </div>
+        <div class="profile-chip"><span>Café Central</span><span class="avatar">JP</span></div>
+      </header>
+
+      <section class="hero">
+        <div class="mascot" aria-hidden="true">HI</div>
+        <div>
+          <p class="hero-kicker">Hola, Café Central</p>
+          <h2>¿Qué quieres crear hoy?</h2>
+          <p>Cuéntame qué deseas promocionar y prepararé una propuesta lista para editar.</p>
+        </div>
+      </section>
+
+      <section class="quick-actions" aria-label="Acciones rápidas">
+        <button data-prompt="Quiero promocionar una bebida fría nueva para esta semana">Crear publicación</button>
+        <button data-prompt="Escribe un guion corto para presentar nuestra bebida fría">Guion para video</button>
+        <button data-prompt="Crea una idea de promoción para atraer visitas al local">Idea de promoción</button>
+        <button data-prompt="Recomienda una plantilla para Instagram">Explorar plantillas</button>
+      </section>
+
+      <section class="chat-panel">
+        <div id="conversation" class="conversation" aria-live="polite">
+          <article class="message assistant-message">
+            <div class="message-label">HiTrendy</div>
+            <p>Ya conozco el perfil de demostración. Puedes pedirme una publicación, un guion o una idea de campaña.</p>
+          </article>
+        </div>
+
+        <form id="composer" class="composer">
+          <label class="sr-only" for="message">Mensaje</label>
+          <button type="button" class="attach" aria-label="Adjuntar archivo">＋</button>
+          <textarea id="message" rows="1" placeholder="Describe lo que quieres promocionar"></textarea>
+          <button type="submit" class="send">Enviar</button>
+        </form>
+      </section>
+    </main>
+
+    <aside class="context-panel">
+      <div class="panel-card">
+        <p class="eyebrow">PERFIL ACTIVO</p>
+        <h3>Café Central</h3>
+        <dl>
+          <div><dt>Ubicación</dt><dd>Tegucigalpa</dd></div>
+          <div><dt>Público</dt><dd>Estudiantes universitarios</dd></div>
+          <div><dt>Red</dt><dd>Instagram</dd></div>
+          <div><dt>Objetivo</dt><dd>Visitas al local</dd></div>
+          <div><dt>Tono</dt><dd>Juvenil</dd></div>
+        </dl>
+      </div>
+      <div class="panel-card muted-card">
+        <p class="eyebrow">MODO DEMO</p>
+        <p>Funciona sin claves externas y devuelve un resultado estructurado para validar el flujo.</p>
+      </div>
+    </aside>
+  </div>
+  <script src="/static/app.js"></script>
+</body>
+</html>

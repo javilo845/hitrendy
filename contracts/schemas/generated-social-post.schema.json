@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://hitrendy.local/schemas/generated-social-post.schema.json",
+  "title": "GeneratedSocialPost",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["artifact_type", "platform", "hook", "caption", "call_to_action", "hashtags", "visual_direction", "format_recommendation", "assumptions"],
+  "properties": {
+    "artifact_type": {"const": "social_post"},
+    "platform": {"type": "string", "enum": ["instagram", "facebook", "tiktok", "whatsapp", "youtube", "x", "linkedin"]},
+    "hook": {"type": "string", "minLength": 1, "maxLength": 180},
+    "caption": {"type": "string", "minLength": 1, "maxLength": 2200},
+    "call_to_action": {"type": "string", "maxLength": 240},
+    "hashtags": {"type": "array", "maxItems": 5, "uniqueItems": true, "items": {"type": "string", "pattern": "^#[^\\s#]+$"}},
+    "visual_direction": {"type": "string", "minLength": 1, "maxLength": 700},
+    "format_recommendation": {"type": "string", "enum": ["static_post", "carousel", "story", "reel", "short_video", "text_post"]},
+    "assumptions": {"type": "array", "maxItems": 10, "items": {"type": "string", "maxLength": 240}}
+  }
+}

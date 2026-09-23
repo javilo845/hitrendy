@@ -1,0 +1,63 @@
+project:
+  id: HITRENDY
+  name: HiTrendy
+  version: 1.0-blueprint
+  language: es
+  product_type: web_saas
+  primary_goal: personalized_social_content_assistant
+  mvp_status: in_progress
+
+source_of_truth:
+  contracts: contracts/schemas
+  decisions: docs/03-architecture/adr
+  implementation: docs/06-implementation/agentic-playbook.md
+
+bounded_contexts:
+  - id: identity
+    owns: [users, sessions, workspaces]
+  - id: business_profile
+    owns: [businesses, audiences, brand_profiles, objectives]
+  - id: conversation
+    owns: [threads, messages, attachments]
+  - id: generation
+    owns: [generation_jobs, generated_artifacts, provider_calls]
+  - id: templates
+    owns: [templates, template_tags, template_recommendations]
+  - id: library
+    owns: [assets, folders, projects]
+  - id: analytics
+    owns: [events, feedback, usage_metrics]
+
+core_flows:
+  - id: FLOW-ONBOARD-001
+    name: business_onboarding
+    docs: docs/00-product/user-flows.md
+  - id: FLOW-GEN-001
+    name: generate_social_copy
+    docs: docs/04-ai/orchestration.md
+  - id: FLOW-ASSET-001
+    name: analyze_uploaded_creative
+    docs: docs/04-ai/skills-catalog.md
+  - id: FLOW-SAVE-001
+    name: save_generated_project
+    docs: docs/02-ux/screen-specs.md
+
+requirements:
+  - id: FR-001
+    statement: User can create and maintain a business profile.
+  - id: FR-002
+    statement: User can generate social content through a conversational interface.
+  - id: FR-003
+    statement: Generated content uses business and brand context.
+  - id: FR-004
+    statement: User can edit and save generated content as a project.
+  - id: FR-005
+    statement: User can receive feedback on an uploaded visual asset.
+  - id: FR-006
+    statement: User can browse recommended templates.
+  - id: NFR-001
+    statement: Demo mode runs without external credentials.
+  - id: NFR-002
+    statement: All LLM output is schema-validated.
+  - id: NFR-003
+    statement: Provider implementations are interchangeable.

@@ -1,0 +1,11 @@
+{
+  "artifact_type": "social_post",
+  "platform": "instagram",
+  "hook": "Tu pausa fría de la semana ya llegó ☕❄️",
+  "caption": "Conoce nuestra nueva bebida fría de café: una opción pensada para acompañar tus tardes de estudio y compartir con amigos. Ven a probarla esta semana y cuéntanos qué te parece.",
+  "call_to_action": "Visítanos y descubre tu nueva favorita.",
+  "hashtags": ["#CafeFrio", "#CafeTegucigalpa", "#PlanConAmigos"],
+  "visual_direction": "Video vertical con tres tomas: preparación, textura final y un grupo de estudiantes disfrutando la bebida en el local.",
+  "format_recommendation": "reel",
+  "assumptions": ["No se incluyó precio ni descuento porque no fueron proporcionados."]
+}

@@ -1,0 +1,38 @@
+
+{
+  "name": "hitrendy-monorepo",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "starter/web"
+  ],
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "dependencies": {
+    "next": "14.2.5",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "styled-jsx": "5.1.1"
+  },
+  "scripts": {
+    "build": "npm run web:build",
+    "web:dev": "node scripts/run-web.mjs",
+    "web:build": "npm run build -w starter/web",
+    "web:typecheck": "npm run typecheck -w starter/web",
+    "web:lint": "npm run lint -w starter/web",
+    "web:test": "npm run test -w starter/web",
+    "validate": "bash scripts/validate.sh",
+    "validate:e2e": "bash scripts/validate-e2e.sh",
+    "backend:dev": "node scripts/run-backend.mjs",
+    "backend:test": "PYTHONPATH=starter/backend python -m pytest starter/backend/tests",
+    "beta:check": "python scripts/beta_readiness_check.py",
+    "beta:load-smoke": "python scripts/load_smoke.py",
+    "backup": "PYTHONPATH=starter/backend python scripts/backup.py",
+    "restore:drill": "PYTHONPATH=starter/backend python scripts/restore_drill.py",
+    "web:test:e2e": "npm run test:e2e -w starter/web",
+    "web:test:e2e:beta": "npm run test:e2e -w starter/web -- tests/e2e/beta-readiness.spec.ts",
+    "images:worker": "node scripts/run-images-worker.mjs",
+    "dev": "node scripts/dev.mjs"
+  }
+}
