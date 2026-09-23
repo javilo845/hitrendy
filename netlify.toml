@@ -9,14 +9,23 @@
   NODE_VERSION = "20"
   NPM_FLAGS = "--legacy-peer-deps"
 
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
+
 [functions]
   included_files = [
     "node_modules/next/**",
+    "../../node_modules/next/**",
     "node_modules/styled-jsx/**",
+    "../../node_modules/styled-jsx/**",
     "node_modules/@next/**",
+    "../../node_modules/@next/**",
     "node_modules/@swc/**",
+    "../../node_modules/@swc/**",
     "node_modules/react/**",
+    "../../node_modules/react/**",
     "node_modules/react-dom/**",
+    "../../node_modules/react-dom/**",
     ".next/**"
   ]
 
