@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HiTrendy - Asistente de Contenido</title>
+  <meta name="description" content="Crea contenido de redes sociales personalizado para tu negocio con IA">
+  <link rel="icon" href="/starter/web/public/brand/hitrendy-mark.svg" type="image/svg+xml">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    }
+    body {
+      background: radial-gradient(circle at top center, #1e1b4b 0%, #09090b 100%);
+      color: #ffffff;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      text-align: center;
+    }
+    .card {
+      max-width: 580px;
+      width: 100%;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 24px;
+      padding: 48px 32px;
+      backdrop-filter: blur(16px);
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.5);
+    }
+    .badge {
+      display: inline-block;
+      padding: 6px 14px;
+      background: rgba(139, 92, 246, 0.15);
+      border: 1px solid rgba(139, 92, 246, 0.3);
+      color: #c4b5fd;
+      border-radius: 9999px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-bottom: 24px;
+    }
+    h1 {
+      font-size: 2.5rem;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      margin-bottom: 16px;
+      background: linear-gradient(135deg, #ffffff 40%, #c4b5fd 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    p {
+      color: #a1a1aa;
+      font-size: 1.1rem;
+      line-height: 1.6;
+      margin-bottom: 32px;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      background: #7c3aed;
+      color: #ffffff;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 1.05rem;
+      padding: 14px 28px;
+      border-radius: 9999px;
+      transition: all 0.2s ease;
+      box-shadow: 0 8px 24px rgba(124, 58, 237, 0.4);
+    }
+    .btn:hover {
+      background: #6d28d9;
+      transform: translateY(-2px);
+      box-shadow: 0 12px 32px rgba(124, 58, 237, 0.5);
+    }
+    .footer-note {
+      margin-top: 24px;
+      font-size: 0.85rem;
+      color: #71717a;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="badge">✨ HiTrendy App</div>
+    <h1>Comienza a Crear</h1>
+    <p>HiTrendy es una plataforma diseñada para ayudar a pequeños negocios y creadores a transformar sus ideas en contenido visual atractivo y profesional usando Inteligencia Artificial.</p>
+    <a href="./login" class="btn" id="launch-btn">Empezar a Crear &rarr;</a>
+    <div class="footer-note">Desplegado con Next.js y Netlify</div>
+  </div>
+
+  <script>
+    // Si la aplicación de Next.js está corriendo en subdirectorio o rutas relativas
+    if (window.location.pathname === '/' || window.location.pathname === '/index.html') {
+      // Si existe una ruta de la aplicación activa, intentar navegar
+      console.log('HiTrendy initialized');
+    }
+  </script>
+</body>
+</html>
